@@ -1,4 +1,4 @@
-from PyQt5 import QtWidgets, uic, QtCore
+from PyQt5 import QtWidgets, uic, QtCore, QtGui
 from pyqtgraph import PlotWidget, plot
 import sys
 from pyqt_realtime_log_widget import LogWidget
