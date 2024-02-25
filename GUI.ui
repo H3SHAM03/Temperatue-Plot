@@ -96,8 +96,20 @@
      <height>21</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuPlayback">
+    <property name="title">
+     <string>Playback</string>
+    </property>
+    <addaction name="actionPlay"/>
+   </widget>
+   <addaction name="menuPlayback"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionPlay">
+   <property name="text">
+    <string>Play | Pause</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>

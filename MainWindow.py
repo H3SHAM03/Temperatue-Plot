@@ -20,8 +20,10 @@ class MyWindow(QtWidgets.QMainWindow):
         self.indices = []
         self.data_line = self.GraphWidget.plot(pen='r',name='temperature')
         self.index = 0
+        self.ispaused = False
 
         self.ui.pushButton.clicked.connect(self.ClearTB)
+        self.ui.actionPlay.triggered.connect(self.PlayPause)
 
         threading.Thread(target=self.ReadData).start()
 
@@ -30,7 +32,7 @@ class MyWindow(QtWidgets.QMainWindow):
             self.tb.verticalScrollBar().setValue(self.tb.verticalScrollBar().maximum())
             data = str(self.ser.readline().decode('ascii'))
             data = data.replace('\r\n','')
-            if data != '':
+            if data != '' and self.ispaused == False:
                 self.data.append(float(data))
                 self.index += 1
                 self.indices.append(self.index)
@@ -40,7 +42,7 @@ class MyWindow(QtWidgets.QMainWindow):
                 if float(data)>70:
                     t = time.localtime()
                     current_time = time.strftime("%H:%M:%S", t)
-                    warn = '[' + str(current_time) + ']: ' + 'Abnormal temperature(%.2f)' %float(data) 
+                    warn = '[' + str(current_time) + ']: ' + 'Abnormal temperature(%.2f)' %float(data)
                     self.tb.append(warn)
 
     def UpdateViewBox(self):
@@ -49,3 +51,9 @@ class MyWindow(QtWidgets.QMainWindow):
 
     def ClearTB(self):
         self.tb.clear()
+
+    def PlayPause(self):
+        if self.ispaused == False:
+            self.ispaused = True
+        else:
+            self.ispaused = False
