@@ -28,21 +28,23 @@ class MyWindow(QtWidgets.QMainWindow):
         threading.Thread(target=self.ReadData).start()
 
     def ReadData(self):
+        start = time.time()
         while True:
             self.tb.verticalScrollBar().setValue(self.tb.verticalScrollBar().maximum())
             data = str(self.ser.readline().decode('ascii'))
             data = data.replace('\r\n','')
+            seconds = time.time()
             if data != '' and self.ispaused == False:
                 self.data.append(float(data))
-                self.index += 1
+                self.index = seconds - start
                 self.indices.append(self.index)
                 self.tb.verticalScrollBar().setValue(self.tb.verticalScrollBar().maximum())
-                self.data_line.setData(self.indices,self.data)
+                self.data_line.setData(self.indices, self.data)
                 self.UpdateViewBox()
                 if float(data)>70:
                     t = time.localtime()
                     current_time = time.strftime("%H:%M:%S", t)
-                    warn = '[' + str(current_time) + ']: ' + 'Abnormal temperature(%.2f)' %float(data)
+                    warn = '[' + str(current_time) + ']: ' + 'Abnormal temperature(%.2f °C)' %float(data)
                     self.tb.append(warn)
 
     def UpdateViewBox(self):
